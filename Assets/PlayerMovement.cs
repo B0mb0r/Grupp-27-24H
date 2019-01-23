@@ -9,6 +9,11 @@ public class PlayerMovement : MonoBehaviour
     public float jumpSpeed = 12f;
 
     public float dashSpeed;
+    public float dashCooldown = 3;
+    public float dashCooldownRemaining;
+    public float dashtime;
+    public float startdashtime;
+
     private int lookDirection;
 
     public int JumpCounter = 2;
@@ -20,11 +25,11 @@ public class PlayerMovement : MonoBehaviour
     {
         //Våran variabel kopplas till rätt rigidbody
         rbody = GetComponent<Rigidbody2D>();
+        dashtime = startdashtime;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        //Våran variabel som kollar om vi är på marken sätts som sann
         JumpCounter = 2;
     }
 
@@ -47,16 +52,24 @@ public class PlayerMovement : MonoBehaviour
             rbody.velocity = new Vector2(rbody.velocity.x, jumpSpeed);
             JumpCounter = JumpCounter - 1;
         }
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKey(KeyCode.LeftShift) && dashtime > 0 && dashCooldownRemaining <= 0)
         {
             if (lookDirection == 1)
             {
                 rbody.velocity = new Vector2(-dashSpeed, rbody.velocity.y);
+                dashtime -= Time.deltaTime;
             }
             else
             {
                 rbody.velocity = new Vector2(dashSpeed, rbody.velocity.y);
+                dashtime -= Time.deltaTime;
             }
         }
+        if (Input.GetKeyUp(KeyCode.LeftShift) && dashCooldownRemaining <= 0)
+            {
+                dashtime = startdashtime;
+                dashCooldownRemaining = dashCooldown;
+            }
+        dashCooldownRemaining = dashCooldownRemaining - (1 * Time.deltaTime);
     }
 }
