@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
     public float dashSpeed;
     private int lookDirection;
 
-    public GroundChecker JumpCounter;
+    public int JumpCounter = 2;
 
     private Rigidbody2D rbody;
 
@@ -20,6 +20,12 @@ public class PlayerMovement : MonoBehaviour
     {
         //Våran variabel kopplas till rätt rigidbody
         rbody = GetComponent<Rigidbody2D>();
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        //Våran variabel som kollar om vi är på marken sätts som sann
+        JumpCounter = 2;
     }
 
     // Update is called once per frame
@@ -36,9 +42,10 @@ public class PlayerMovement : MonoBehaviour
             lookDirection = 2;
         }
         //Om hopp knappen trycks in så händer något
-        if (Input.GetButtonDown("Jump") && GroundChecker.JumpCounter > 0)
+        if (Input.GetButtonDown("Jump") && JumpCounter > 0)
         {
             rbody.velocity = new Vector2(rbody.velocity.x, jumpSpeed);
+            JumpCounter = JumpCounter - 1;
         }
         if (Input.GetKey(KeyCode.LeftShift))
         {
