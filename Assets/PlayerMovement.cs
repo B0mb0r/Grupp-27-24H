@@ -16,7 +16,7 @@ public class PlayerMovement : MonoBehaviour
 
     private int lookDirection;
 
-    public int JumpCounter = 2;
+    public GroundChecker groundCheck;
 
     private Rigidbody2D rbody;
 
@@ -26,11 +26,6 @@ public class PlayerMovement : MonoBehaviour
         //Våran variabel kopplas till rätt rigidbody
         rbody = GetComponent<Rigidbody2D>();
         dashtime = startdashtime;
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        JumpCounter = 2;
     }
 
     // Update is called once per frame
@@ -47,10 +42,12 @@ public class PlayerMovement : MonoBehaviour
             lookDirection = 2;
         }
         //Om hopp knappen trycks in så händer något
-        if (Input.GetButtonDown("Jump") && JumpCounter > 0)
+        if (Input.GetButtonDown("Jump"))
         {
-            rbody.velocity = new Vector2(rbody.velocity.x, jumpSpeed);
-            JumpCounter = JumpCounter - 1;
+            if (groundCheck.isGrounded == true)
+            {
+                rbody.velocity = new Vector2(rbody.velocity.x, jumpSpeed);
+            }
         }
         if (Input.GetKey(KeyCode.LeftShift) && dashtime > 0 && dashCooldownRemaining <= 0)
         {
@@ -58,18 +55,23 @@ public class PlayerMovement : MonoBehaviour
             {
                 rbody.velocity = new Vector2(-dashSpeed, rbody.velocity.y);
                 dashtime -= Time.deltaTime;
+                if (dashtime <= 0)
+                {
+                    dashtime = startdashtime;
+                    dashCooldownRemaining = dashCooldown;
+                }
             }
             else
             {
                 rbody.velocity = new Vector2(dashSpeed, rbody.velocity.y);
                 dashtime -= Time.deltaTime;
+                if (dashtime <= 0)
+                {
+                    dashtime = startdashtime;
+                    dashCooldownRemaining = dashCooldown;
+                }
             }
         }
-        if (Input.GetKeyUp(KeyCode.LeftShift) && dashCooldownRemaining <= 0)
-            {
-                dashtime = startdashtime;
-                dashCooldownRemaining = dashCooldown;
-            }
         dashCooldownRemaining = dashCooldownRemaining - (1 * Time.deltaTime);
     }
 }
