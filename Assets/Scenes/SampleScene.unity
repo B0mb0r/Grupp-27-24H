@@ -332,7 +332,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1551815376}
   - component: {fileID: 1551815375}
-  - component: {fileID: 1551815372}
   - component: {fileID: 1551815374}
   - component: {fileID: 1551815373}
   - component: {fileID: 1551815371}
@@ -389,21 +388,7 @@ MonoBehaviour:
   dashCooldownRemaining: 0
   dashtime: 0
   startdashtime: 0.1
-  JumpCounter: 1
-  groundCheck: {fileID: 1551815372}
---- !u!114 &1551815372
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1551815369}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf2b4c848db39db47b735b09d477a688, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isGrounded: 0
+  JumpCounter: 2
 --- !u!50 &1551815373
 Rigidbody2D:
   serializedVersion: 4
